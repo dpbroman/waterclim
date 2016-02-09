@@ -13,8 +13,6 @@ library(dplyr)
 library(tidyr)
 library(readr)
 library(data.table)
-library(ggplot2)
-library(RColorBrewer)
 
 ##user inputs
 #raw vic file location
