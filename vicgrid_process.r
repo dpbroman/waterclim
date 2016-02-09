@@ -49,7 +49,7 @@ for(i in 1:length(file_list)){
 	fluxes_temp$lat = lat_temp
 	#outputs selected data - edit if different vars are desired
 	fluxes_temp = fluxes_temp %>% dplyr::select(lon, lat, year, month, day, prcp, temp, longwave, shortwave, rh, vpd, et, runoff, baseflow, soil_moist1, soil_moist2, soil_moist3, swe, snow_depth)
-	fluxes = rbind_list(fluxes, fluxes_temp)
+	fluxes = bind_rows(fluxes, fluxes_temp)
 }
 fluxes = fluxes %>% dplyr::mutate(date = as.Date(paste(year, month, day, sep = '-'))) %>% dplyr::mutate(jd = as.numeric(format(date, '%j')))
 saveRDS(fluxes, paste0(dir_output, run_name, '.rda'))
@@ -57,5 +57,5 @@ saveRDS(fluxes, paste0(dir_output, run_name, '.rda'))
 #calculates monthly values - change if different vars / quantities are desired
 fluxes_temp_stat = fluxes %>% group_by(year, month, lon, lat) %>% dplyr::summarise(prcp = sum(prcp), temp = mean(temp), rh = mean(rh), runoff = sum(runoff), baseflow = sum(baseflow), swe_max = max(swe), swe_max_jd = jd[which.max(swe)])
 fluxes_temp_snow = fluxes %>% dplyr::filter(day == 1) %>% dplyr::select(lon, lat, year, month, swe, snow_depth)
-fluxes_temp_mon = left_join(fluxes_temp_stat, fluxes_temp_snow)
-saveRDS(fluxes_temp_mon, paste0(dir_output, run_name, '-month.rda'))
+fluxes_mon = left_join(fluxes_temp_stat, fluxes_temp_snow)
+saveRDS(fluxes_mon, paste0(dir_output, run_name, '-month.rda'))
