@@ -2,9 +2,6 @@
 #reads in raw VIC node output
 #outputs daily and monthly values as rdata object for use in impact assessments
 #data can be output in other formats if desired - csv etc, though file size and write time may be issues
-#this version reads in and outputs daily values and then calculates monthly values
-#for computing time / resource limitations see - vicgrid_mon_process.r which performs these calculations inside the loop
-#and only saves the monthly values
 #################################################
 ##load libraries
 source(function_lib.r)
@@ -27,11 +24,11 @@ dir_vic = ' '
 #output location 
 dir_output = ' '
 run_name = ' '
+
 ##preprocess
 scenarios = list.dirs(dir_vic)
 
 ##process
-
 #daily
 for(s in 1:length(scenarios)){
 		flows_day = NULL
@@ -68,7 +65,7 @@ for(s in 1:length(scenarios)){
 		saveRDS(flows_month, paste0(dir_output, scenarios[s], '_', run_name, '_month.rda'))
 	}
 	
-	#monthly mean
+#monthly mean
 	for(s in 1:length(scenarios)){
 		flows_month_mean = NULL
 		file_path = file.path(dir_vic, scenarios[s], 'flow/')
